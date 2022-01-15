@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CSV.helpers;
+using CSV.Model;
+using System;
 
 namespace CSV
 {
@@ -6,7 +8,8 @@ namespace CSV
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var app = new CalcSurvey();
+            app.Run();
         }
     }
 }
