@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CSV.helpers;
+using CSV.Model;
+using System;
 
 namespace CSV
 {
@@ -6,7 +8,9 @@ namespace CSV
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var helper = new CSVHelper();
+            var survey=helper.Read<Survey>("survey.csv");
+            var response = helper.Read<SurveyResponse>("survey-res.csv");
         }
     }
 }
