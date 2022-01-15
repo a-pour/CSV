@@ -13,8 +13,9 @@ namespace CSV.helpers
 {
     class CSVHelper
     {
-        public IEnumerable<T> Read<T>(string Path)
+        public List<T> Read<T>(string Path)
         {
+
             using (var reader = new StreamReader(Path))
             using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
@@ -26,14 +27,13 @@ namespace CSV.helpers
                     case "SurveyResponse":
                         csvReader.Context.RegisterClassMap<SurveyResponseMap>();
                         break;
-
                 }
 
                 var data = csvReader.GetRecords<T>();
-                return data;
+                return data.ToList();
             }
         }
     }
-
-
 }
+
+

@@ -8,6 +8,7 @@ namespace CSV.Model
 {
     public class Survey
     {
+        
         public string Type { get; set; }
 
         public string Theme { get; set; }

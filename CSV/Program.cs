@@ -8,9 +8,8 @@ namespace CSV
     {
         static void Main(string[] args)
         {
-            var helper = new CSVHelper();
-            var survey=helper.Read<Survey>("survey.csv");
-            var response = helper.Read<SurveyResponse>("survey-res.csv");
+            var app = new CalcSurvey();
+            app.Run();
         }
     }
 }
