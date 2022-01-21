@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CSV
 {
-    class CalcSurvey
+    public class CalcSurvey
     {
         public void Run()
         {
@@ -26,31 +26,43 @@ namespace CSV
 
             }
 
+            //read survey data to an object array
             var survey = helper.Read<Survey>(surveyPath);
+
+            //read survey-responses data to an object array
             var response = helper.Read<SurveyResponse>(surveyResponsePath);
 
-            var count = System.Convert.ToDouble(response.Where(x => (x.TimeStamp ?? string.Empty) != string.Empty).Count());
+            //total count of responses
+            var count = response.Count();
+            
+            // coun of responses with submit_date
+            var answerdCount = System.Convert.ToDouble(response.Where(x => (x.TimeStamp ?? string.Empty) != string.Empty).Count());
+
             Console.WriteLine($"Total:{count.ToString()}");
 
-            var percentage = response.Where(x => (x.TimeStamp ?? string.Empty) != string.Empty).Count() / count;
-            Console.WriteLine($"Percentage:{percentage}");
+            var percentage = count == 0 //avoid devide by zero
+                             ? count : 
+                             (float)answerdCount / count * 100;
+
+            Console.WriteLine($"Answerd People Percentage:{percentage}%");
             Console.WriteLine("***********************");
             Console.WriteLine("Average For Rating Qs:");
             Console.WriteLine("-----------------------");
 
-            int a;
+            int a;// temp variable to test if data is not number
             var data = response.Select
                 (x => x.Answers.Sum(y =>
-                    !int.TryParse(y, out a) // data is int
+                    !int.TryParse(y, out a) // check if data is int
                     || (x.TimeStamp ?? string.Empty) == string.Empty // TimeStamp found
-                        ? 0
-                        : System.Convert.ToInt32(y))).ToList();
+                        ? 0// if data is not number or does not have time_stmp return 0
+                        : System.Convert.ToDouble(y))).ToList();
 
+            //print averages 
             int i = 0;
             survey.ForEach(x =>
             {
                 if (x.Type == "ratingquestion")
-                    Console.WriteLine($"{x.Text}:{data[i] / count}");
+                    Console.WriteLine($"{x.Text}:{data[i] / answerdCount}");
                 i++;
             });
         }
